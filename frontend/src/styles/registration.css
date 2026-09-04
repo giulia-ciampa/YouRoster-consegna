@@ -1,0 +1,8 @@
+/* dropdown*/
+.dropdown-item:hover {
+  background-color: #9e428938 !important;
+}
+
+.dropdown-item:active {
+  background-color: #9e4289 !important;
+}
