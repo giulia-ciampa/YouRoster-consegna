@@ -278,7 +278,7 @@ export interface HrCertificationRequest {
 }
 
 export interface ReviewerNotesDTO {
-  notes: string
+  notes: string | undefined
 }
 
 export interface AbsenceCertificationReviewResponse {
