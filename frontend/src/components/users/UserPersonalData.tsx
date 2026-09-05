@@ -49,6 +49,10 @@ export const UserPersonalData = () => {
   const [province, setProvince] = useState("")
   const [showAddressModal, setShowAddressModal] = useState(false)
 
+  const [showContactsModal, setShowContactsModal] = useState(false)
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const [iban, setIban] = useState("")
+
   const [saving, setSaving] = useState(false)
 
   //funzione per la data
@@ -215,6 +219,35 @@ export const UserPersonalData = () => {
     }
   }
 
+  //SALVATAGGIO MODIFICHE CONTATTI
+  const handleSaveContacts = async () => {
+    try {
+      setSaving(true)
+
+      const formData = new FormData()
+
+      formData.append("phoneNumber", phoneNumber)
+      formData.append("iban", iban)
+
+      const updatedProfile = await updateMyProfile(formData)
+
+      setProfile(updatedProfile)
+      setShowContactsModal(false)
+
+      alert("Contatti e IBAN aggiornati correttamente.")
+    } catch (error) {
+      console.error("Errore durante la modifica dei contatti:", error)
+
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Errore durante la modifica dei contatti.",
+      )
+    } finally {
+      setSaving(false)
+    }
+  }
+
   return (
     <>
       <UserNavbar />
@@ -305,15 +338,14 @@ export const UserPersonalData = () => {
                 centered
               >
                 <Modal.Header closeButton>
-                  <Modal.Title className="text-primary fw-bold">
-                    Modifica dati anagrafici
-                  </Modal.Title>
+                  <Modal.Title>Modifica dati anagrafici</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
                   <Form.Group className="mb-3">
                     <Form.Label>Nome</Form.Label>
                     <Form.Control
+                      className="input"
                       type="text"
                       defaultValue={profile?.name}
                       value={name}
@@ -324,6 +356,7 @@ export const UserPersonalData = () => {
                   <Form.Group className="mb-3">
                     <Form.Label>Cognome</Form.Label>
                     <Form.Control
+                      className="input"
                       type="text"
                       defaultValue={profile?.surname}
                       value={surname}
@@ -334,6 +367,7 @@ export const UserPersonalData = () => {
                   <Form.Group className="mb-3">
                     <Form.Label>Data di nascita</Form.Label>
                     <Form.Control
+                      className="input"
                       type="date"
                       defaultValue={
                         profile?.dateOfBirth
@@ -348,6 +382,7 @@ export const UserPersonalData = () => {
                   <Form.Group className="mb-3">
                     <Form.Label>Luogo di nascita</Form.Label>
                     <Form.Control
+                      className="input"
                       type="text"
                       defaultValue={profile?.placeOfBirth}
                       value={placeOfBirth}
@@ -357,7 +392,13 @@ export const UserPersonalData = () => {
 
                   <Form.Group>
                     <Form.Label>Codice fiscale</Form.Label>
-                    <Form.Control type="text" defaultValue={profile?.taxCode} />
+                    <Form.Control
+                      type="text"
+                      defaultValue={profile?.taxCode}
+                      className="input"
+                      value={taxCode}
+                      onChange={(e) => setTaxCode(e.target.value)}
+                    />
                   </Form.Group>
                 </Modal.Body>
 
@@ -450,9 +491,7 @@ export const UserPersonalData = () => {
                   centered
                 >
                   <Modal.Header closeButton>
-                    <Modal.Title className="text-primary fw-bold">
-                      Modifica indirizzo
-                    </Modal.Title>
+                    <Modal.Title>Modifica indirizzo</Modal.Title>
                   </Modal.Header>
 
                   <Modal.Body>
@@ -460,6 +499,7 @@ export const UserPersonalData = () => {
                       <Form.Label>Via/Piazza</Form.Label>
                       <Form.Control
                         type="text"
+                        className="input"
                         value={streetAddress}
                         onChange={(e) => setStreetAddress(e.target.value)}
                       />
@@ -471,6 +511,7 @@ export const UserPersonalData = () => {
                         type="text"
                         value={houseNumber}
                         onChange={(e) => setHouseNumber(e.target.value)}
+                        className="input"
                       />
                     </Form.Group>
 
@@ -480,6 +521,7 @@ export const UserPersonalData = () => {
                         type="text"
                         value={zipCode}
                         onChange={(e) => setZipCode(e.target.value)}
+                        className="input"
                       />
                     </Form.Group>
 
@@ -489,6 +531,7 @@ export const UserPersonalData = () => {
                         type="text"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
+                        className="input"
                       />
                     </Form.Group>
 
@@ -498,6 +541,7 @@ export const UserPersonalData = () => {
                         type="text"
                         value={province}
                         onChange={(e) => setProvince(e.target.value)}
+                        className="input"
                       />
                     </Form.Group>
                   </Modal.Body>
@@ -662,9 +706,7 @@ export const UserPersonalData = () => {
                 centered
               >
                 <Modal.Header closeButton>
-                  <Modal.Title className="text-primary fw-bold">
-                    Modifica documentazione
-                  </Modal.Title>
+                  <Modal.Title>Modifica documentazione</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
@@ -674,6 +716,7 @@ export const UserPersonalData = () => {
                     <Form.Select
                       value={documentType}
                       onChange={(e) => setDocumentType(e.target.value)}
+                      className="input"
                     >
                       <option value="">Seleziona...</option>
 
@@ -692,6 +735,7 @@ export const UserPersonalData = () => {
                       type="text"
                       value={documentNumber}
                       onChange={(e) => setDocumentNumber(e.target.value)}
+                      className="input"
                     />
                   </Form.Group>
 
@@ -702,6 +746,7 @@ export const UserPersonalData = () => {
                       type="date"
                       value={issueDate}
                       onChange={(e) => setIssueDate(e.target.value)}
+                      className="input"
                     />
                   </Form.Group>
 
@@ -712,6 +757,7 @@ export const UserPersonalData = () => {
                       type="date"
                       value={expirationDate}
                       onChange={(e) => setExpirationDate(e.target.value)}
+                      className="input"
                     />
                   </Form.Group>
 
@@ -723,6 +769,7 @@ export const UserPersonalData = () => {
                     <Form.Label>Fronte</Form.Label>
 
                     <Form.Control
+                      className="input"
                       type="file"
                       accept="image/*"
                       onChange={(e) => {
@@ -736,6 +783,7 @@ export const UserPersonalData = () => {
                     <Form.Label>Retro</Form.Label>
 
                     <Form.Control
+                      className="input"
                       type="file"
                       accept="image/*"
                       onChange={(e) => {
@@ -755,6 +803,7 @@ export const UserPersonalData = () => {
                     <Form.Label>Fronte</Form.Label>
 
                     <Form.Control
+                      className="input"
                       type="file"
                       accept="image/*"
                       onChange={(e) => {
@@ -768,6 +817,7 @@ export const UserPersonalData = () => {
                     <Form.Label>Retro</Form.Label>
 
                     <Form.Control
+                      className="input"
                       type="file"
                       accept="image/*"
                       onChange={(e) => {
@@ -817,6 +867,11 @@ export const UserPersonalData = () => {
                     <Button
                       className="p-1 rounded-circle border-0 backgroundOrange text-light d-flex align-items-center justify-content-center"
                       disabled={loading}
+                      onClick={() => {
+                        setPhoneNumber(profile?.phoneNumber ?? "")
+                        setIban(profile?.iban ?? "")
+                        setShowContactsModal(true)
+                      }}
                     >
                       <FaPencilAlt size={8} />
                     </Button>
@@ -850,6 +905,66 @@ export const UserPersonalData = () => {
                   )}
                 </Card>
               </Col>
+              {/* MODALE CONTATTI E IBAN */}
+              <Modal
+                show={showContactsModal}
+                onHide={() => setShowContactsModal(false)}
+                centered
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title className="text-primary fw-bold">
+                    Modifica contatti e IBAN
+                  </Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Cellulare</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  <Form.Group>
+                    <Form.Label>IBAN</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={iban}
+                      onChange={(e) => setIban(e.target.value)}
+                    />
+                  </Form.Group>
+                </Modal.Body>
+
+                <Modal.Footer>
+                  <Button
+                    className="btn-custom1"
+                    onClick={handleSaveContacts}
+                    disabled={saving}
+                  >
+                    {saving ? (
+                      <>
+                        <Spinner
+                          animation="border"
+                          size="sm"
+                          className="me-2"
+                        />
+                        Salvataggio...
+                      </>
+                    ) : (
+                      "Salva modifiche"
+                    )}
+                  </Button>
+
+                  <Button
+                    className="btn-custom2"
+                    onClick={() => setShowContactsModal(false)}
+                  >
+                    Annulla
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </Row>
           </Col>
         </Row>
