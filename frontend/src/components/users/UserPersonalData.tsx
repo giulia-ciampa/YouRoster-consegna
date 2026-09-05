@@ -42,6 +42,13 @@ export const UserPersonalData = () => {
   const [taxCodeCardFront, setTaxCodeCardFront] = useState<File | null>(null)
   const [taxCodeCardBack, setTaxCodeCardBack] = useState<File | null>(null)
 
+  const [streetAddress, setStreetAddress] = useState("")
+  const [houseNumber, setHouseNumber] = useState("")
+  const [zipCode, setZipCode] = useState("")
+  const [city, setCity] = useState("")
+  const [province, setProvince] = useState("")
+  const [showAddressModal, setShowAddressModal] = useState(false)
+
   const [saving, setSaving] = useState(false)
 
   //funzione per la data
@@ -174,6 +181,40 @@ export const UserPersonalData = () => {
       setSaving(false)
     }
   }
+
+  // SALVATAGGIO MODIFICHE INDIRIZZO
+
+  const handleSaveAddress = async () => {
+    try {
+      setSaving(true)
+
+      const formData = new FormData()
+
+      formData.append("streetAddress", streetAddress)
+      formData.append("houseNumber", houseNumber)
+      formData.append("zipCode", zipCode)
+      formData.append("city", city)
+      formData.append("province", province)
+
+      const updatedProfile = await updateMyProfile(formData)
+
+      setProfile(updatedProfile)
+      setShowAddressModal(false)
+
+      alert("Indirizzo aggiornato correttamente.")
+    } catch (error) {
+      console.error("Errore durante la modifica dell'indirizzo:", error)
+
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Errore durante la modifica dell'indirizzo.",
+      )
+    } finally {
+      setSaving(false)
+    }
+  }
+
   return (
     <>
       <UserNavbar />
@@ -357,6 +398,14 @@ export const UserPersonalData = () => {
                     <Button
                       className="p-1 rounded-circle border-0 backgroundOrange text-light d-flex align-items-center justify-content-center"
                       disabled={loading}
+                      onClick={() => {
+                        setStreetAddress(profile?.streetAddress ?? "")
+                        setHouseNumber(profile?.houseNumber ?? "")
+                        setZipCode(profile?.zipCode ?? "")
+                        setCity(profile?.city ?? "")
+                        setProvince(profile?.province ?? "")
+                        setShowAddressModal(true)
+                      }}
                     >
                       <FaPencilAlt size={8} />
                     </Button>
@@ -394,6 +443,93 @@ export const UserPersonalData = () => {
                     </div>
                   )}
                 </Card>
+                {/* MODALE INDIRIZZO */}
+                <Modal
+                  show={showAddressModal}
+                  onHide={() => setShowAddressModal(false)}
+                  centered
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title className="text-primary fw-bold">
+                      Modifica indirizzo
+                    </Modal.Title>
+                  </Modal.Header>
+
+                  <Modal.Body>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Via/Piazza</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={streetAddress}
+                        onChange={(e) => setStreetAddress(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label>Numero civico</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={houseNumber}
+                        onChange={(e) => setHouseNumber(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label>CAP</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={zipCode}
+                        onChange={(e) => setZipCode(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label>Città</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group>
+                      <Form.Label>Provincia</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={province}
+                        onChange={(e) => setProvince(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Modal.Body>
+
+                  <Modal.Footer>
+                    <Button
+                      className="btn-custom1"
+                      onClick={handleSaveAddress}
+                      disabled={saving}
+                    >
+                      {saving ? (
+                        <>
+                          <Spinner
+                            animation="border"
+                            size="sm"
+                            className="me-2"
+                          />
+                          Salvataggio...
+                        </>
+                      ) : (
+                        "Salva modifiche"
+                      )}
+                    </Button>
+
+                    <Button
+                      className="btn-custom2"
+                      onClick={() => setShowAddressModal(false)}
+                    >
+                      Annulla
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </Col>
 
               {/*DOCUMENTAZIONE */}
