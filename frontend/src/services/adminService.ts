@@ -164,3 +164,21 @@ export const updateUserRoles = async (
     )
   }
 }
+
+// DISABILITA ACCOUNT
+export const disableAccount = async (
+  accountId: string,
+): Promise<MessageResponseDTO> => {
+  const response = await authFetch(`/accounts/${accountId}/disable`, {
+    method: "PATCH",
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => null)
+    throw new Error(
+      errorData?.message || "Errore durante la disabilitazione dell'account.",
+    )
+  }
+
+  return response.json()
+}

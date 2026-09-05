@@ -13,9 +13,13 @@ import AdminNavbar from "./AdminNavbar"
 import { useEffect, useState } from "react"
 import { FcSearch } from "react-icons/fc"
 import type { AccountStatus, UserProfileResponseDTO } from "../../types/users"
-import { getAllUsers, updateUserRoles } from "../../services/adminService"
+import {
+  disableAccount,
+  getAllUsers,
+  updateUserRoles,
+} from "../../services/adminService"
 import "../../styles/mobileText.css"
-import { FaEye, FaPencilAlt } from "react-icons/fa"
+import { FaEye, FaPencilAlt, FaUserSlash } from "react-icons/fa"
 import { IoMdAdd } from "react-icons/io"
 import {
   fetchActiveOffices,
@@ -40,6 +44,8 @@ export const AdminUsers = () => {
   const [selectedRoles, setSelectedRoles] = useState<string[]>([])
 
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false)
+
+  const [showDisableModal, setShowDisableModal] = useState(false)
 
   //GET TUTTI GLI UTENTI
   const fetchUsers = async () => {
@@ -145,6 +151,12 @@ export const AdminUsers = () => {
     setShowUserDetailsModal(true)
   }
 
+  //FUNZIONE APERTURA MODALE DISABILITA ACCOUNT
+  const handleOpenDisableModal = (user: UserProfileResponseDTO) => {
+    setSelectedUser(user)
+    setShowDisableModal(true)
+  }
+
   //FUNZIONE ASSEGNAZIONE UFFICIO
   const handleSaveOffice = async () => {
     if (!selectedUser || !selectedOfficeId) {
@@ -204,6 +216,42 @@ export const AdminUsers = () => {
         error instanceof Error
           ? error.message
           : "Errore durante l'aggiornamento dei ruoli.",
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  //FUNZIONE PER DISABILITARE UN ACCOUNT
+  const handleDisableAccount = async () => {
+    if (!selectedUser) return
+
+    try {
+      setLoading(true)
+
+      await disableAccount(selectedUser.accountId)
+
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.accountId === selectedUser.accountId
+            ? { ...user, accountStatus: "DISABLED" }
+            : user,
+        ),
+      )
+
+      setSelectedUser({
+        ...selectedUser,
+        accountStatus: "DISABLED",
+      })
+
+      setShowDisableModal(false)
+
+      alert("Account disabilitato con successo")
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Errore durante la disabilitazione dell'account",
       )
     } finally {
       setLoading(false)
@@ -461,7 +509,20 @@ export const AdminUsers = () => {
                             <td
                               className={`small-text text-center ${colorStatus(user.accountStatus)}`}
                             >
-                              {translateStatus(user.accountStatus)}
+                              <div>
+                                <div className="d-flex align-items-center justify-content-center h-100">
+                                  {translateStatus(user.accountStatus)}
+                                </div>
+
+                                {user.accountStatus === "ACTIVE" && (
+                                  <Button
+                                    className="ms-auto p-1 rounded-circle border-0 btn-custom1 d-flex align-items-center justify-content-center"
+                                    onClick={() => handleOpenDisableModal(user)}
+                                  >
+                                    <FaUserSlash size={11} />
+                                  </Button>
+                                )}
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -804,6 +865,47 @@ export const AdminUsers = () => {
               onClick={() => setShowUserDetailsModal(false)}
             >
               Chiudi
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        {/*MODALE DISABILITA ACCOUNT */}
+        <Modal
+          show={showDisableModal}
+          onHide={() => setShowDisableModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Disabilita account</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body className="text-center">
+            <p className="mb-2">
+              Sei sicuro di voler disabilitare l'account di:
+            </p>
+
+            <strong>
+              {selectedUser?.name} {selectedUser?.surname}
+            </strong>
+
+            <p className="mt-3 mb-0 text-muted">
+              L'utente non potrà più accedere al sistema.
+            </p>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button
+              className="btn-custom2"
+              onClick={() => setShowDisableModal(false)}
+            >
+              Annulla
+            </Button>
+
+            <Button
+              className="btn-custom3"
+              onClick={handleDisableAccount}
+              disabled={loading}
+            >
+              {loading ? <Spinner size="sm" /> : "Disabilita"}
             </Button>
           </Modal.Footer>
         </Modal>
