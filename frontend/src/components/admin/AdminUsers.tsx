@@ -15,7 +15,7 @@ import { FcSearch } from "react-icons/fc"
 import type { AccountStatus, UserProfileResponseDTO } from "../../types/users"
 import { getAllUsers, updateUserRoles } from "../../services/adminService"
 import "../../styles/mobileText.css"
-import { FaPencilAlt } from "react-icons/fa"
+import { FaEye, FaPencilAlt } from "react-icons/fa"
 import { IoMdAdd } from "react-icons/io"
 import {
   fetchActiveOffices,
@@ -38,6 +38,8 @@ export const AdminUsers = () => {
   const [showRoleModal, setShowRoleModal] = useState(false)
   const [roles, setRoles] = useState<RoleResponseDTO[]>([])
   const [selectedRoles, setSelectedRoles] = useState<string[]>([])
+
+  const [showUserDetailsModal, setShowUserDetailsModal] = useState(false)
 
   //GET TUTTI GLI UTENTI
   const fetchUsers = async () => {
@@ -135,6 +137,12 @@ export const AdminUsers = () => {
           : "Errore nel recupero dei ruoli.",
       )
     }
+  }
+
+  //FUNZIONE APERTURA MODALE DETTAGLI
+  const handleOpenUserDetails = (user: UserProfileResponseDTO) => {
+    setSelectedUser(user)
+    setShowUserDetailsModal(true)
   }
 
   //FUNZIONE ASSEGNAZIONE UFFICIO
@@ -351,7 +359,19 @@ export const AdminUsers = () => {
                         {filteredUsers.map((user) => (
                           <tr key={user.userId}>
                             <td className="text-dark small-text">
-                              {user.name} {user.surname}
+                              <div className="d-flex align-items-center justify-content-center gap-2">
+                                <span>
+                                  {user.name} {user.surname}
+                                </span>
+
+                                <Button
+                                  className="p-1  text-secondary rounded-circle border-0 btn-custom2 d-flex align-items-center justify-content-center"
+                                  disabled={loading}
+                                  onClick={() => handleOpenUserDetails(user)}
+                                >
+                                  <FaEye size={8} />
+                                </Button>
+                              </div>
                             </td>
                             <td className="text-dark small-text">
                               {user.email}
@@ -574,6 +594,216 @@ export const AdminUsers = () => {
 
             <Button variant="secondary" onClick={() => setShowRoleModal(false)}>
               Annulla
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        {/* MODALE DETTAGLI UTENTE */}
+        <Modal
+          show={showUserDetailsModal}
+          onHide={() => setShowUserDetailsModal(false)}
+          centered
+          size="lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title className="text-primary fw-bold">
+              Dettagli utente
+            </Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            {selectedUser && (
+              <>
+                {/* INTESTAZIONE */}
+                <div className="d-flex justify-content-between align-items-start mb-4">
+                  <div>
+                    <h4 className="text-dark fw-bold mb-1">
+                      {selectedUser.name} {selectedUser.surname}
+                    </h4>
+
+                    <p className="text-muted mb-0">{selectedUser.email}</p>
+                  </div>
+
+                  {/* FOTO PROFILO */}
+                  {selectedUser.photoUrl ? (
+                    <img
+                      src={selectedUser.photoUrl}
+                      alt={`${selectedUser.name} ${selectedUser.surname}`}
+                      className="rounded-circle"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      className="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                      }}
+                    >
+                      ?
+                    </div>
+                  )}
+                </div>
+
+                {/* DATI PERSONALI */}
+                <h6 className="text-primary fw-bold mb-3">Dati personali</h6>
+
+                <div className="row g-3 mb-4">
+                  <div className="col-md-6">
+                    <strong>Nome e cognome</strong>
+                    <div>
+                      {selectedUser.name} {selectedUser.surname}
+                    </div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>Data di nascita</strong>
+                    <div>{selectedUser.dateOfBirth}</div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>Luogo di nascita</strong>
+                    <div>{selectedUser.placeOfBirth}</div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>Codice fiscale</strong>
+                    <div>{selectedUser.taxCode}</div>
+                  </div>
+                </div>
+
+                <hr />
+
+                {/* CONTATTI */}
+                <h6 className="text-primary fw-bold mb-3">Contatti</h6>
+
+                <div className="row g-3 mb-4">
+                  <div className="col-md-6">
+                    <strong>Email</strong>
+                    <div>{selectedUser.email}</div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>Numero di cellulare</strong>
+                    <div>{selectedUser.phoneNumber}</div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>IBAN</strong>
+                    <div>{selectedUser.iban}</div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>Ufficio assegnato</strong>
+                    <div>{selectedUser.officeName}</div>
+                  </div>
+                </div>
+
+                <hr />
+
+                {/* DOCUMENTO */}
+                <h6 className="text-primary fw-bold mb-3">Documento</h6>
+
+                <div className="row g-3 mb-4">
+                  <div className="col-md-6">
+                    <strong>Tipo di documento</strong>
+                    <div>{selectedUser.documentType}</div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>Numero documento</strong>
+                    <div>{selectedUser.documentNumber}</div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>Data emissione</strong>
+                    <div>{selectedUser.issueDate}</div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>Data scadenza</strong>
+                    <div>{selectedUser.expirationDate}</div>
+                  </div>
+                </div>
+
+                {/* FOTO DOCUMENTO */}
+                <div className="row g-3 mb-4">
+                  <div className="col-md-6">
+                    <strong>Documento fronte</strong>
+
+                    {selectedUser.documentFrontUrl ? (
+                      <img
+                        src={selectedUser.documentFrontUrl}
+                        alt="Documento fronte"
+                        className="img-fluid rounded border mt-2"
+                      />
+                    ) : (
+                      <div className="text-muted mt-2">Non disponibile</div>
+                    )}
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>Documento retro</strong>
+
+                    {selectedUser.documentBackUrl ? (
+                      <img
+                        src={selectedUser.documentBackUrl}
+                        alt="Documento retro"
+                        className="img-fluid rounded border mt-2"
+                      />
+                    ) : (
+                      <div className="text-muted mt-2">Non disponibile</div>
+                    )}
+                  </div>
+                </div>
+
+                <hr />
+
+                {/* TESSERA SANITARIA */}
+                <h6 className="text-primary fw-bold mb-3">Tessera sanitaria</h6>
+
+                <div className="row g-3">
+                  <div className="col-md-6">
+                    <strong>Tessera sanitaria fronte</strong>
+
+                    {selectedUser.taxCodeCardFrontUrl ? (
+                      <img
+                        src={selectedUser.taxCodeCardFrontUrl}
+                        alt="Tessera sanitaria fronte"
+                        className="img-fluid rounded border mt-2"
+                      />
+                    ) : (
+                      <div className="text-muted mt-2">Non disponibile</div>
+                    )}
+                  </div>
+
+                  <div className="col-md-6">
+                    <strong>Tessera sanitaria retro</strong>
+
+                    {selectedUser.taxCodeCardBackUrl ? (
+                      <img
+                        src={selectedUser.taxCodeCardBackUrl}
+                        alt="Tessera sanitaria retro"
+                        className="img-fluid rounded border mt-2"
+                      />
+                    ) : (
+                      <div className="text-muted mt-2">Non disponibile</div>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button
+              className="btn-custom2"
+              onClick={() => setShowUserDetailsModal(false)}
+            >
+              Chiudi
             </Button>
           </Modal.Footer>
         </Modal>
