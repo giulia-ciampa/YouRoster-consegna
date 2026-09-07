@@ -144,10 +144,18 @@ export const ShiftManagerNavbar = () => {
 
             <NavDropdown.Item
               as={NavLink}
+              to={"/requests-to-manage/shift-manager"}
+              className="text-dark"
+            >
+              Richieste da gestire
+            </NavDropdown.Item>
+
+            <NavDropdown.Item
+              as={NavLink}
               to={"/requests/shift-manager"}
               className="text-dark"
             >
-              Richieste
+              Le mie richieste
             </NavDropdown.Item>
 
             <NavDropdown.Item
@@ -177,37 +185,65 @@ export const ShiftManagerNavbar = () => {
               Anagrafica
             </Nav.Link>
 
-            <Nav.Link
-              as={NavLink}
-              to={"/shifts/shift-manager"}
-              className="text-light"
+            <NavDropdown
+              title={
+                <span className="text-light">
+                  Turnazione <IoIosArrowDown />
+                </span>
+              }
+              id="shiftsDropdown"
+              className="myDropDown"
             >
-              Turni
-            </Nav.Link>
+              <NavDropdown.Item
+                as={NavLink}
+                to={"/shifts/shift-manager"}
+                className="text-dark"
+              >
+                Turni
+              </NavDropdown.Item>
 
-            <Nav.Link
-              as={NavLink}
-              to={"/shifts-assignment/shift-manager"}
-              className="text-light text-nowrap"
-            >
-              Assegna turni
-            </Nav.Link>
+              <NavDropdown.Item
+                as={NavLink}
+                to={"/shifts-assignment/shift-manager"}
+                className="text-dark text-nowrap"
+              >
+                Assegna turni
+              </NavDropdown.Item>
 
-            <Nav.Link
-              as={NavLink}
-              to={"/shifts-assignment/my-assignments"}
-              className="text-light text-nowrap"
-            >
-              Le Mie Assegnazioni
-            </Nav.Link>
+              <NavDropdown.Item
+                as={NavLink}
+                to={"/shifts-assignment/my-assignments"}
+                className="text-dark text-nowrap"
+              >
+                Le Mie Assegnazioni
+              </NavDropdown.Item>
+            </NavDropdown>
 
-            <Nav.Link
-              as={NavLink}
-              to={"/requests/shift-manager"}
-              className="text-light"
+            <NavDropdown
+              title={
+                <span className="text-light">
+                  Richieste <IoIosArrowDown />
+                </span>
+              }
+              id="dropdownRequests"
+              className="myDropDown"
             >
-              Richieste
-            </Nav.Link>
+              <NavDropdown.Item
+                as={NavLink}
+                to={"/requests-to-manage/shift-manager"}
+                className="text-dark"
+              >
+                Richieste da gestire
+              </NavDropdown.Item>
+
+              <NavDropdown.Item
+                as={NavLink}
+                to={"/requests/shift-manager"}
+                className="text-dark"
+              >
+                Le mie richieste
+              </NavDropdown.Item>
+            </NavDropdown>
 
             <Nav.Link
               as={NavLink}

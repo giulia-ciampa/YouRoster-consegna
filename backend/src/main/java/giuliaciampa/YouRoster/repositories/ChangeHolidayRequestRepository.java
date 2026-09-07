@@ -45,4 +45,19 @@ public interface ChangeHolidayRequestRepository extends JpaRepository<ChangeHoli
     );
 
     boolean existsByOriginalRequest_IdAndChangeRequestStatus(UUID originalRequestId, RequestStatus requestStatus);
+
+    @Query("SELECT r FROM ChangeHolidayRequest r WHERE " +
+            "(:search = '' OR :search IS NULL OR LOWER(r.originalRequest.employee.name) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(r.originalRequest.employee.surname) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
+            "(:status IS NULL OR r.changeRequestStatus = :status) AND " +
+            "r.originalRequest.employee <> :employee AND " +
+            "(:startDate IS NULL OR r.startDate >= :startDate) AND " +
+            "(:endDate IS NULL OR r.endDate <= :endDate)")
+    Page<ChangeHolidayRequest> findPendingRequestsForShiftManager(
+            @Param("search") String name,
+            @Param("status") RequestStatus status,
+            @Param("employee") User employee,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            Pageable pageable
+    );
 }

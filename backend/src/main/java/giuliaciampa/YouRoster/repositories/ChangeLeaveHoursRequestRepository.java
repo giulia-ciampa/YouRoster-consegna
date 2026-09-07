@@ -41,6 +41,24 @@ public interface ChangeLeaveHoursRequestRepository extends JpaRepository<ChangeL
             Pageable pageable
     );
 
+
+    @Query("SELECT r FROM ChangeLeaveHoursRequest r WHERE " +
+            "(:search = '' OR :search IS NULL OR LOWER(r.originalRequest.employee.name) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(r.originalRequest.employee.surname) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
+            "(:status IS NULL OR r.changeRequestStatus = :status) AND " +
+            "r.originalRequest.employee <> :employee AND " +
+            "(CAST(:date AS java.time.LocalDate) IS NULL OR r.date = :date) AND " +
+            "(CAST(:startTime AS java.time.LocalTime) IS NULL OR r.startTime >= :startTime) AND " +
+            "(CAST(:endTime AS java.time.LocalTime) IS NULL OR r.endTime <= :endTime)")
+    Page<ChangeLeaveHoursRequest> findPendingRequestsForShiftManager(
+            @Param("search") String name,
+            @Param("status") RequestStatus status,
+            @Param("employee") User employee,
+            @Param("date") LocalDate date,
+            @Param("startTime") LocalTime startTime,
+            @Param("endTime") LocalTime endTime,
+            Pageable pageable
+    );
+
     Optional<ChangeLeaveHoursRequest>
     findByOriginalRequest_IdAndOriginalRequest_Employee(
             UUID originalRequestId,

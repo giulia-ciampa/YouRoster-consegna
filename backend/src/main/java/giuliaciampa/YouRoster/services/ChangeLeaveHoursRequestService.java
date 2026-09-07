@@ -324,12 +324,43 @@ public class ChangeLeaveHoursRequestService {
 
 
     //6. GET REQUEST DA LAVORARE (SENT)
-    public Page<ChangeLeaveHoursRequestResponseDTO> getPendingRequests(Account currentAccount, String name, LocalDate date, LocalTime startTime, LocalTime endTime, Pageable pageable) {
+    public Page<ChangeLeaveHoursRequestResponseDTO> getPendingRequests(
+            Account currentAccount,
+            String name,
+            LocalDate date,
+            LocalTime startTime,
+            LocalTime endTime,
+            Pageable pageable) {
 
-        // 1. Controllo di sicurezza
         validateAdminAndShiftManagerRole(currentAccount);
 
-        return changeLeaveHoursRequestRepository.findWithFilters(name, RequestStatus.SENT, date, startTime, endTime, pageable).map(this::mapToResponse);
+        boolean isShiftManager = currentAccount.getRoles().stream()
+                .anyMatch(role -> "SHIFT MANAGER".equals(role.getName()));
+
+        if (isShiftManager) {
+            return changeLeaveHoursRequestRepository
+                    .findPendingRequestsForShiftManager(
+                            name,
+                            RequestStatus.SENT,
+                            currentAccount.getUser(),
+                            date,
+                            startTime,
+                            endTime,
+                            pageable
+                    )
+                    .map(this::mapToResponse);
+        }
+
+        return changeLeaveHoursRequestRepository
+                .findWithFilters(
+                        name,
+                        RequestStatus.SENT,
+                        date,
+                        startTime,
+                        endTime,
+                        pageable
+                )
+                .map(this::mapToResponse);
     }
 
     //7. SE SENT MA NON TI SERVE PIù, LO STATO DIVENTA "CANCELLED"

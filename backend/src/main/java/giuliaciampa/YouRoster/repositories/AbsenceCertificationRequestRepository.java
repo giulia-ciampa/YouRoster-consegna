@@ -52,4 +52,19 @@ public interface AbsenceCertificationRequestRepository extends JpaRepository<Abs
             Pageable pageable
     );
 
+    @Query("SELECT r FROM AbsenceCertificationRequest r WHERE " +
+            "(:search = '' OR :search IS NULL OR LOWER(r.employee.name) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(r.employee.surname) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
+            "(:status IS NULL OR r.requestStatus = :status) AND " +
+            "r.employee <> :employee AND " +
+            "(:startDate IS NULL OR r.startDate >= :startDate) AND " +
+            "(:endDate IS NULL OR r.endDate <= :endDate)")
+    Page<AbsenceCertificationRequest> findPendingRequestsForHr(
+            @Param("search") String name,
+            @Param("status") RequestStatus status,
+            @Param("employee") User employee,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            Pageable pageable
+    );
+
 }

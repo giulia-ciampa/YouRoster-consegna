@@ -323,11 +323,40 @@ public class HolidayRequestService {
     }
 
     //6. GET REQUEST DA LAVORARE (SENT)
-    public Page<HolidayRequestResponseDTO> getPendingRequests(Account currentAccount, String name, LocalDate startDate, LocalDate endDate, Pageable pageable) {
-        // 1. Controllo di sicurezza
+    public Page<HolidayRequestResponseDTO> getPendingRequests(
+            Account currentAccount,
+            String name,
+            LocalDate startDate,
+            LocalDate endDate,
+            Pageable pageable) {
+
         validateAdminAndShiftManagerRole(currentAccount);
 
-        return holidayRequestRepository.findWithFilters(name, RequestStatus.SENT, startDate, endDate, pageable).map(this::mapToResponse);
+        boolean isShiftManager = currentAccount.getRoles().stream()
+                .anyMatch(role -> "SHIFT MANAGER".equals(role.getName()));
+
+        if (isShiftManager) {
+            return holidayRequestRepository
+                    .findPendingRequestsForShiftManager(
+                            name,
+                            RequestStatus.SENT,
+                            currentAccount.getUser(),
+                            startDate,
+                            endDate,
+                            pageable
+                    )
+                    .map(this::mapToResponse);
+        }
+
+        return holidayRequestRepository
+                .findWithFilters(
+                        name,
+                        RequestStatus.SENT,
+                        startDate,
+                        endDate,
+                        pageable
+                )
+                .map(this::mapToResponse);
     }
 
     //7. SE SENT MA NON TI SERVE PIù, LO STATO DIVENTA "CANCELLED" + INVIO EMAIL A SHIFT MANAGER, ADMIN

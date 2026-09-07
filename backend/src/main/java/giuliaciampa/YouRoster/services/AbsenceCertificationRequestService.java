@@ -372,14 +372,40 @@ public class AbsenceCertificationRequestService {
 
 
     //6. METODO GET RICHIESTE DA LAVORARE(STATO SENT)
-    public Page<AbsenceCertificationResponseDTO> getPendingRequests(Account currentAccount, String name, LocalDate startDate, LocalDate endDate, Pageable pageable) {
-        // 1. Controllo di sicurezza
+    public Page<AbsenceCertificationResponseDTO> getPendingRequests(
+            Account currentAccount,
+            String name,
+            LocalDate startDate,
+            LocalDate endDate,
+            Pageable pageable) {
+
         validateAdminAndHrRole(currentAccount);
 
-        // 2. Esecuzione query
-        return absenceCertificationRequestRepository.findWithFilters(name, RequestStatus.SENT, startDate, endDate, pageable)
-                .map(this::mapToResponse);
+        boolean isHr = currentAccount.getRoles().stream()
+                .anyMatch(role -> "HR".equals(role.getName()));
 
+        if (isHr) {
+            return absenceCertificationRequestRepository
+                    .findPendingRequestsForHr(
+                            name,
+                            RequestStatus.SENT,
+                            currentAccount.getUser(),
+                            startDate,
+                            endDate,
+                            pageable
+                    )
+                    .map(this::mapToResponse);
+        }
+
+        return absenceCertificationRequestRepository
+                .findWithFilters(
+                        name,
+                        RequestStatus.SENT,
+                        startDate,
+                        endDate,
+                        pageable
+                )
+                .map(this::mapToResponse);
     }
 
     //7. ADMIN O HR VALUTANO LA RICHIESTA(APPROVA)
