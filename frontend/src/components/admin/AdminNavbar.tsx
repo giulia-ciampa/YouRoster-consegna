@@ -111,6 +111,15 @@ const AdminNavbar = () => {
             >
               Dashboard
             </NavDropdown.Item>
+
+            <NavDropdown.Item
+              className="text-dark"
+              as={NavLink}
+              to={"/contracts/admin"}
+            >
+              Contratti
+            </NavDropdown.Item>
+
             <NavDropdown.Item
               className="text-dark"
               as={NavLink}
@@ -118,6 +127,7 @@ const AdminNavbar = () => {
             >
               Utenti
             </NavDropdown.Item>
+
             <NavDropdown.Item
               as={NavLink}
               to={"/offices/admin"}
@@ -148,6 +158,15 @@ const AdminNavbar = () => {
             >
               Dashboard
             </Nav.Link>
+
+            <Nav.Link
+              className="text-light"
+              as={NavLink}
+              to={"/contracts/admin"}
+            >
+              Contratti
+            </Nav.Link>
+
             <Nav.Link className="text-light" as={NavLink} to={"/users/admin"}>
               Utenti
             </Nav.Link>
