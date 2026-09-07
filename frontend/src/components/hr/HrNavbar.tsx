@@ -76,7 +76,7 @@ export const HrNavbar = () => {
     }
   }
   return (
-    <Navbar expand="sm" className="background-brand px-3">
+    <Navbar expand="lg" className="background-brand px-3">
       <Container
         fluid
         className="d-flex justify-content-between align-items-center"
@@ -86,7 +86,7 @@ export const HrNavbar = () => {
           <Navbar.Brand
             as={NavLink}
             to={"/"}
-            className="fw-bold tracking-wide text-light d-none d-sm-inline me-3"
+            className="fw-bold tracking-wide text-light d-none d-lg-inline me-3"
           >
             YouRoster
           </Navbar.Brand>
@@ -99,7 +99,7 @@ export const HrNavbar = () => {
               </span>
             }
             id="mobile-menu-dropdown"
-            className="d-sm-none myDropDown"
+            className="d-lg-none myDropDown"
           >
             <NavDropdown.Item
               as={NavLink}
@@ -122,7 +122,23 @@ export const HrNavbar = () => {
               to={"/shifts/hr"}
               className="text-dark text-nowrap"
             >
-              Turni
+              I miei turni
+            </NavDropdown.Item>
+
+            <NavDropdown.Item
+              as={NavLink}
+              to={"/users/hr"}
+              className="text-dark text-nowrap"
+            >
+              Utenti
+            </NavDropdown.Item>
+
+            <NavDropdown.Item
+              as={NavLink}
+              to={"/requests-to-manage/hr"}
+              className="text-dark text-nowrap"
+            >
+              Richieste da gestire
             </NavDropdown.Item>
 
             <NavDropdown.Item
@@ -130,7 +146,7 @@ export const HrNavbar = () => {
               to={"/requests/hr"}
               className="text-dark"
             >
-              Richieste
+              Le mie richieste
             </NavDropdown.Item>
 
             <NavDropdown.Item
@@ -151,7 +167,7 @@ export const HrNavbar = () => {
           </NavDropdown>
 
           {/* Link desktop */}
-          <Nav className="d-none d-sm-flex flex-row gap-5">
+          <Nav className="d-none d-lg-flex flex-row gap-5">
             <Nav.Link as={NavLink} to={"/dashboard/hr"} className="text-light">
               Dashboard
             </Nav.Link>
@@ -164,17 +180,54 @@ export const HrNavbar = () => {
               Anagrafica
             </Nav.Link>
 
-            <Nav.Link as={NavLink} to={"/shifts/hr"} className="text-light">
-              Turni
+            <Nav.Link
+              as={NavLink}
+              to={"/shifts/hr"}
+              className="text-light text-nowrap"
+            >
+              I miei turni
             </Nav.Link>
 
             <Nav.Link
+              as={NavLink}
+              to={"/users/hr"}
+              className="text-light text-nowrap"
+            >
+              Utenti
+            </Nav.Link>
+
+            <NavDropdown
+              title={
+                <span className="text-light">
+                  Richieste <IoIosArrowDown />
+                </span>
+              }
+              id="requests-dropdown"
+              className="myDropDown"
+            >
+              <NavDropdown.Item
+                as={NavLink}
+                to="/requests-to-manage/hr"
+                className="text-dark"
+              >
+                Richieste da gestire
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={NavLink}
+                to="/requests/hr"
+                className="text-dark"
+              >
+                Le mie richieste
+              </NavDropdown.Item>
+            </NavDropdown>
+
+            {/* <Nav.Link
               as={NavLink}
               to={"/requests/hr"}
               className="text-light text-nowrap"
             >
               Richieste
-            </Nav.Link>
+            </Nav.Link>*/}
 
             <Nav.Link
               as={NavLink}

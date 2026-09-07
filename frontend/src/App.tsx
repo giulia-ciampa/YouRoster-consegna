@@ -30,6 +30,7 @@ import { HrOffices } from "./components/hr/HrOffices"
 import { HrContracts } from "./components/hr/HrContracts"
 import { UserPersonalData } from "./components/users/UserPersonalData"
 import { AdminRequests } from "./components/admin/AdminRequests"
+import { HrUsers } from "./components/hr/HrUsers"
 
 function App() {
   return (
@@ -89,10 +90,14 @@ function App() {
 
             {/* HR */}
             <Route path="/dashboard/hr" element={<HrDashboard />} />
-            <Route path="/requests/hr" element={<HrRequestsToManage />} />
+            <Route
+              path="/requests-to-manage/hr"
+              element={<HrRequestsToManage />}
+            />
             <Route path="/shifts/hr" element={<HrShifts />} />
             <Route path="/offices/hr" element={<HrOffices />} />
             <Route path="/contracts/hr" element={<HrContracts />} />
+            <Route path="/users/hr" element={<HrUsers />} />
           </Routes>
         </main>
       </BrowserRouter>

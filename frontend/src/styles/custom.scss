@@ -72,6 +72,10 @@ $light: $light-gold;
   }
 }
 
+.myDropDown .dropdown-item.active {
+  background-color: #f8f8f2;
+}
+
 .nav-link.active {
   color: white;
   text-shadow:
