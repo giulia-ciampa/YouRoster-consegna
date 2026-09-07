@@ -308,6 +308,38 @@ export const ShiftManagerAssignment = () => {
     }
   }
 
+  //FUNZIONE COLORE CASELLA TABELLA IN BASE AL TIPO DI TURNO
+  const getAssignmentClass = (assignment: AssignmentType) => {
+    switch (assignment) {
+      case "WORK":
+        return "turno"
+
+      case "PERMISSION":
+        return "permesso"
+
+      case "OFF":
+        return "off"
+
+      case "ON_HOLIDAY":
+        return "ferie"
+
+      case "SICK":
+        return "richiesta_certificato"
+
+      case "MATERNITY":
+        return "richiesta_certificato"
+
+      case "PATERNITY":
+        return "richiesta_certificato"
+
+      case "PARENTAL_LEAVE":
+        return "richiesta_certificato"
+
+      default:
+        return ""
+    }
+  }
+
   return (
     <>
       <ShiftManagerNavbar />
@@ -324,7 +356,7 @@ export const ShiftManagerAssignment = () => {
 
         <Row className="g-4 w-100 flex-column align-items-center mb-2">
           <Col xs={12} md={11}>
-            <div className="d-flex justify-content-center align-items-center mt-4 mb-4">
+            <div className="d-flex justify-content-center align-items-center my-2">
               <Button
                 className="btn-custom1 rounded-circle d-flex align-items-center justify-content-center small-text me-3"
                 style={{ width: "20px", height: "20px", padding: "0" }}
@@ -406,12 +438,21 @@ export const ShiftManagerAssignment = () => {
                         )
 
                         return (
-                          <td key={index} className="small-text">
+                          <td
+                            key={index}
+                            className={`small-text ${
+                              existingAssignment
+                                ? getAssignmentClass(
+                                    existingAssignment.assignmentType,
+                                  )
+                                : ""
+                            }`}
+                          >
                             {existingAssignment ? (
                               existingAssignment.assignmentType === "WORK" ? (
                                 // WORK → MOSTRA IL TURNO + MATITA
                                 <div>
-                                  <div className="text-dark d-flex flex-column align-items-center">
+                                  <div className="d-flex flex-column align-items-center">
                                     <p className="mb-0 fw-bold">
                                       {existingAssignment.officeName}
                                     </p>
@@ -438,10 +479,8 @@ export const ShiftManagerAssignment = () => {
                                 "OFF" ? (
                                 // OFF → MOSTRA RIPOSO + MATITA
                                 <div>
-                                  <div className="text-dark d-flex flex-column align-items-center">
-                                    <p className="mb-0 text-secondary fw-bold">
-                                      OFF
-                                    </p>
+                                  <div className="d-flex flex-column align-items-center">
+                                    <p className="mb-0">OFF</p>
                                   </div>
 
                                   <div className="d-flex justify-content-end">
@@ -458,8 +497,8 @@ export const ShiftManagerAssignment = () => {
                                 </div>
                               ) : (
                                 // FERIE, MALATTIA, PERMESSO, ECC.
-                                <div className="text-dark d-flex flex-column align-items-center">
-                                  <p className="mb-0 text-secondary fw-bold">
+                                <div className=" d-flex flex-column align-items-center">
+                                  <p className="mb-0">
                                     {existingAssignment.assignmentType ===
                                     "ON_HOLIDAY"
                                       ? "FERIE"

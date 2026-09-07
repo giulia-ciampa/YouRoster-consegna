@@ -137,6 +137,14 @@ const AdminNavbar = () => {
             </NavDropdown.Item>
 
             <NavDropdown.Item
+              className="text-dark"
+              as={NavLink}
+              to={"/shifts-assignment/admin"}
+            >
+              Assegnazione turni
+            </NavDropdown.Item>
+
+            <NavDropdown.Item
               as={NavLink}
               to={"/offices/admin"}
               className="text-dark"
@@ -175,9 +183,31 @@ const AdminNavbar = () => {
               Utenti
             </Nav.Link>
 
-            <Nav.Link className="text-light" as={NavLink} to={"/shifts/admin/"}>
-              Turni
-            </Nav.Link>
+            <NavDropdown
+              title={
+                <span className="text-light">
+                  Turnazione <IoIosArrowDown />
+                </span>
+              }
+              id="shifts-dropdown"
+              className="myDropDown"
+            >
+              <NavDropdown.Item
+                as={NavLink}
+                to="/shifts/admin"
+                className="text-dark"
+              >
+                Turni
+              </NavDropdown.Item>
+
+              <NavDropdown.Item
+                as={NavLink}
+                to="/shifts-assignment/admin"
+                className="text-dark"
+              >
+                Assegnazione turni
+              </NavDropdown.Item>
+            </NavDropdown>
 
             <Nav.Link as={NavLink} to={"/offices/admin"} className="text-light">
               Uffici
