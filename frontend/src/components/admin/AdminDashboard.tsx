@@ -3,11 +3,10 @@ import {
   fetchAcceptAccount,
   fetchAssignmentsByDate,
   fetchClockingsByUser,
-  fetchDailyTasks,
   fetchPendingAccounts,
   fetchRejectAccount,
 } from "../../services/adminService"
-import type { Clocking, ShiftAssignment, ShiftTask } from "../../types/shift"
+import type { Clocking, ShiftAssignment } from "../../types/shift"
 import AdminNavbar from "./AdminNavbar"
 import {
   Container,
@@ -35,7 +34,9 @@ import { fetchActiveOffices } from "../../services/officeService"
 const AdminDashBoard = () => {
   // Stati per i dati
   const [assignments, setAssignments] = useState<ShiftAssignment[]>([])
-  const [tasks, setTasks] = useState<ShiftTask[]>([])
+  {
+    /*const [tasks, setTasks] = useState<ShiftTask[]>([])*/
+  }
   const [clockings, setClockings] = useState<Record<string, Clocking>>({})
   const [pendingAccounts, setPendingAccounts] = useState<PendingAccountDTO[]>(
     [],
@@ -136,8 +137,10 @@ const AdminDashBoard = () => {
         const assignmentsData = await fetchAssignmentsByDate(date)
         setAssignments(assignmentsData.content || assignmentsData)
 
-        const tasksData = await fetchDailyTasks(date)
-        setTasks(tasksData.content || tasksData)
+        {
+          /*const tasksData = await fetchDailyTasks(date)
+        setTasks(tasksData.content || tasksData)*/
+        }
 
         const assignmentList = assignmentsData.content || assignmentsData
         const clockingMap: Record<string, Clocking> = {}
@@ -452,16 +455,18 @@ const AdminDashBoard = () => {
                       <th className="text-dark smaller-text">Ufficio / Sede</th>
                       <th className="text-dark smaller-text">Turno Previsto</th>
                       <th className="text-dark smaller-text">Ruolo</th>
-                      <th className="text-dark smaller-text">Task Assegnato</th>
+                      {/*<th className="text-dark smaller-text">Task Assegnato</th>*/}
                     </tr>
                   </thead>
                   <tbody>
                     {assignments.length > 0 ? (
                       assignments.map((assignment) => {
                         // Trova il task corrispondente per questo turno/utente se c'è un collegamento
-                        const matchedTask = tasks.find(
+                        {
+                          /*  const matchedTask = tasks.find(
                           (t) => t.shiftAssignment?.id === assignment.id,
-                        )
+                        )*/
+                        }
 
                         return (
                           <tr key={assignment.id}>
@@ -478,7 +483,7 @@ const AdminDashBoard = () => {
                               {assignment.startTime} - {assignment.endTime}
                             </td>
                             <td>{assignment.roleNames}</td>
-                            <td>
+                            {/* <td>
                               {matchedTask ? (
                                 <span>
                                   {matchedTask.title ||
@@ -488,7 +493,7 @@ const AdminDashBoard = () => {
                               ) : (
                                 <span className="text-muted">Nessun task</span>
                               )}
-                            </td>
+                            </td>*/}
                           </tr>
                         )
                       })

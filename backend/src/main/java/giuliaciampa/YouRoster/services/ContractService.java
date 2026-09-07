@@ -73,15 +73,15 @@ public class ContractService {
         }
 
         //controllo sul tipo di contratto per fixare la data di scadenza se determinato
-        if (payload.contractType() == ContractType.FULL_TIME_FIXED_TERM_CONTRACT ||
+        if ((payload.contractType() == ContractType.FULL_TIME_FIXED_TERM_CONTRACT ||
                 payload.contractType() == ContractType.PART_TIME_FIXED_TERM_CONTRACT ||
                 payload.contractType() == ContractType.APPRENTICESHIP_CONTRACT ||
-                payload.contractType() == ContractType.EXTRACURRICULAR_INTERNSHIP) {
+                payload.contractType() == ContractType.EXTRACURRICULAR_INTERNSHIP)
+                && payload.endDate() == null) {
 
             throw new BadRequestException(
                     "La data di fine contratto è obbligatoria per questo tipo di contratto"
             );
-
         }
 
         // 3. Popola l'entity

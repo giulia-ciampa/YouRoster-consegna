@@ -567,9 +567,9 @@ export const UserDashboard = () => {
                         <th className="text-center text-smaller text-dark">
                           Turno
                         </th>
-                        <th className="text-center text-smaller text-dark">
+                        {/*<th className="text-center text-smaller text-dark">
                           Mansioni
-                        </th>
+                        </th>*/}
                       </tr>
                     </thead>
 
@@ -584,10 +584,10 @@ export const UserDashboard = () => {
                           {todayAssignment.endTime}
                         </td>
 
-                        <td className="text-center text-smaller text-dark">
+                        {/*<td className="text-center text-smaller text-dark">
                           {todayAssignment.tasks ||
                             "Non ci sono mansioni assegnate"}
-                        </td>
+                        </td>*/}
                       </tr>
                     </tbody>
                   </Table>
@@ -605,9 +605,9 @@ export const UserDashboard = () => {
                         <th className="text-center text-smaller text-dark">
                           Turno
                         </th>
-                        <th className="text-center text-smaller text-dark">
+                        {/*<th className="text-center text-smaller text-dark">
                           Mansioni
-                        </th>
+                        </th>*/}
                       </tr>
                     </thead>
 
@@ -638,9 +638,9 @@ export const UserDashboard = () => {
                         <th className="text-center text-smaller text-dark">
                           Turno
                         </th>
-                        <th className="text-center text-smaller text-dark">
+                        {/*<th className="text-center text-smaller text-dark">
                           Mansioni
-                        </th>
+                        </th>*/}
                       </tr>
                     </thead>
                     <tbody>
@@ -676,9 +676,9 @@ export const UserDashboard = () => {
                       <th className="text-center text-smaller text-dark">
                         Ruolo
                       </th>
-                      <th className="text-center text-smaller text-dark">
+                      {/*<th className="text-center text-smaller text-dark">
                         Mansioni
-                      </th>
+                      </th>*/}
                     </tr>
                   </thead>
                   <tbody>
@@ -694,9 +694,9 @@ export const UserDashboard = () => {
                           <td className="text-center text-smaller text-dark">
                             {colleague.roleNames}
                           </td>
-                          <td className="text-center text-smaller text-dark">
+                          {/*<td className="text-center text-smaller text-dark">
                             {colleague.tasks}
-                          </td>
+                          </td>*/}
                         </tr>
                       ))
                     ) : (

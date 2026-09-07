@@ -70,13 +70,13 @@ public class ShiftController {
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SHIFT MANAGER')")
     public Page<ShiftResponseDTO> findShifts(@RequestParam(defaultValue = "0") int page,
-                                             @RequestParam(defaultValue = "15") int size,
+                                             @RequestParam(defaultValue = "40") int size,
                                              @RequestParam(defaultValue = "office.name") String sortBy,
                                              @RequestParam(required = false) Boolean isActive) {
 
 
         if (size <= 0) size = 10;
-        if (size > 15) size = 15;
+        if (size > 40) size = 40;
         if (page < 0) page = 0;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());

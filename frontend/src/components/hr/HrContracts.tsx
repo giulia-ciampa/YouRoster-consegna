@@ -117,6 +117,7 @@ export const HrContracts = () => {
       }
 
       await createContract(payload)
+      await fetchAllContracts()
 
       setShowModal(false)
       alert("Contratto salvato con successo!")

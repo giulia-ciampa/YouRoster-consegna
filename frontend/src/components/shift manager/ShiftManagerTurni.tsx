@@ -50,7 +50,7 @@ export const ShiftManagerTurni = () => {
   // Funzione per caricare i turni attivi filtrati dal backend
   const loadShifts = async () => {
     try {
-      const shiftsPageData = await fetchShifts(true) // Richiede solo quelli attivi
+      const shiftsPageData = await fetchShifts(true, 0, 50) // Richiede solo quelli attivi
 
       console.log("TURNI ATTIVI DOPO IL REFRESH:", shiftsPageData)
       setShiftsList(shiftsPageData.content || [])
@@ -151,6 +151,12 @@ export const ShiftManagerTurni = () => {
       setShowModal(false)
     } catch (error) {
       console.error("Errore nel salvataggio del turno:", error)
+
+      if (error instanceof Error) {
+        alert(error.message)
+      } else {
+        alert("Si è verificato un errore durante il salvataggio del turno.")
+      }
     } finally {
       setLoading(false)
     }

@@ -74,6 +74,7 @@ export const AdminShiftAssignment = () => {
 
     return d.substring(0, 10)
   }
+
   //----------------------------------------------------------------------
 
   // Stati per il modale di assegnazione turno (al click del +)
@@ -395,7 +396,7 @@ export const AdminShiftAssignment = () => {
               >
                 <thead>
                   <tr>
-                    <th className="text-center small-text text-dark sticky-column column-width">
+                    <th className="text-center fw-semibold small-text text-dark sticky-column column-width">
                       Nome Dipendente
                     </th>
 
@@ -403,13 +404,25 @@ export const AdminShiftAssignment = () => {
                       const [year, month, day] = date.split("-")
                       const displayDate = `${day}/${month}/${year}`
 
+                      const weekday = new Date(
+                        Number(year),
+                        Number(month) - 1,
+                        Number(day),
+                      ).toLocaleDateString("it-IT", {
+                        weekday: "short",
+                      })
+
                       return (
                         <th
                           key={date}
                           className="small-text text-muted"
                           style={{ minWidth: "100px" }}
                         >
-                          <div className="mb-1 fw-bold text-dark">
+                          <div className="mb-1 fw-semibold text-dark">
+                            {weekday.toUpperCase()}
+                          </div>
+
+                          <div className="fw-semibold text-dark">
                             {displayDate}
                           </div>
                         </th>
@@ -452,7 +465,7 @@ export const AdminShiftAssignment = () => {
                                 // WORK → MOSTRA IL TURNO + MATITA
                                 <div>
                                   <div className="d-flex flex-column align-items-center">
-                                    <p className="mb-0">
+                                    <p className="mb-0 fw-semibold">
                                       {existingAssignment.officeName}
                                     </p>
 

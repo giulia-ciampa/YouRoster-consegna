@@ -376,7 +376,7 @@ const Registration = () => {
                 <Form.Control
                   className="input"
                   type="text"
-                  placeholder="Via/Piazza"
+                  placeholder="10"
                   value={houseNumber}
                   onChange={(e) => {
                     setHouseNumber(e.target.value)

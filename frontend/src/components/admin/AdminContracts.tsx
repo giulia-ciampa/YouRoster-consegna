@@ -115,7 +115,10 @@ export const AdminContracts = () => {
         workingHoursPerWeek: Number(workingHoursPerWeek),
       }
 
+      console.log("PAYLOAD CONTRATTO:", payload)
+
       await createContract(payload)
+      await fetchAllContracts()
 
       setShowModal(false)
       alert("Contratto salvato con successo!")
