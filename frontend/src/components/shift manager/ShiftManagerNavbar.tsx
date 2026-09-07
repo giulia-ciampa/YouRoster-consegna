@@ -87,7 +87,7 @@ export const ShiftManagerNavbar = () => {
         <div className="d-flex align-items-center">
           <Navbar.Brand
             as={NavLink}
-            to={"/"}
+            to={"/dashboard/shift-manager"}
             className="fw-bold tracking-wide text-light d-none d-sm-inline me-3"
           >
             YouRoster
