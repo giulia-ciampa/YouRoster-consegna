@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap"
 import { PiUserCircleThin } from "react-icons/pi"
 import { useDispatch, useSelector } from "react-redux"
-import { NavLink, useNavigate } from "react-router"
+import { NavLink, useLocation, useNavigate } from "react-router"
 import { clearUser } from "../../redux/reducers/userSlice"
 import type { UpdateCredentialsPayload } from "../../types/auth"
 import type { RootState } from "../../redux/store/store"
@@ -41,6 +41,7 @@ export const ShiftManagerNavbar = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
 
   //funzione logout
   const handleLogout = () => {
@@ -168,7 +169,8 @@ export const ShiftManagerNavbar = () => {
           </NavDropdown>
 
           {/* Link desktop */}
-          <Nav className="d-none d-sm-flex flex-row gap-5">
+
+          <Nav className="d-none d-sm-flex flex-row gap-3 ms-5">
             <Nav.Link
               as={NavLink}
               to={"/dashboard/shift-manager"}
@@ -193,6 +195,11 @@ export const ShiftManagerNavbar = () => {
               }
               id="shiftsDropdown"
               className="myDropDown"
+              active={
+                location.pathname === "/shifts/shift-manager" ||
+                location.pathname === "/shifts-assignment/shift-manager" ||
+                location.pathname === "/shifts-assignment/my-assignments"
+              }
             >
               <NavDropdown.Item
                 as={NavLink}
@@ -227,6 +234,10 @@ export const ShiftManagerNavbar = () => {
               }
               id="dropdownRequests"
               className="myDropDown"
+              active={
+                location.pathname === "/requests-to-manage/shift-manager" ||
+                location.pathname === "/requests/shift-manager"
+              }
             >
               <NavDropdown.Item
                 as={NavLink}
@@ -272,6 +283,7 @@ export const ShiftManagerNavbar = () => {
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>
+
         {/* modale  */}
         <Modal show={openModal} onHide={() => setOpenModal(false)}>
           <Modal.Header closeButton>

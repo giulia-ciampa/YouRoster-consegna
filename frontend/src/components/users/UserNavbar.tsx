@@ -144,7 +144,7 @@ export const UserNavbar = () => {
           </NavDropdown>
 
           {/* Link desktop */}
-          <Nav className="d-none d-sm-flex flex-row gap-3">
+          <Nav className="d-none d-sm-flex flex-row gap-3 ms-5">
             <Nav.Link
               as={NavLink}
               to={"/dashboard/staff"}

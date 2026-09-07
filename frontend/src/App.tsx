@@ -37,6 +37,7 @@ import { AdminContracts } from "./components/admin/AdminContracts"
 import { AdminShifts } from "./components/admin/AdminShifts"
 import { AdminShiftAssignment } from "./components/admin/AdminShiftAssignment"
 import { ShiftManagerMyRequests } from "./components/shift manager/ShiftManagerMyRequests"
+import { ShiftManagerPersonalData } from "./components/shift manager/ShiftManagerPersonalData"
 
 function App() {
   return (
@@ -103,6 +104,11 @@ function App() {
             <Route
               path="/requests/shift-manager"
               element={<ShiftManagerMyRequests />}
+            />
+
+            <Route
+              path="/personal-data/shift-manager"
+              element={<ShiftManagerPersonalData />}
             />
 
             {/* HR */}

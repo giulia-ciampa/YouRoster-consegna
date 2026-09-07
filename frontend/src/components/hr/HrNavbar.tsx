@@ -167,7 +167,7 @@ export const HrNavbar = () => {
           </NavDropdown>
 
           {/* Link desktop */}
-          <Nav className="d-none d-lg-flex flex-row gap-5">
+          <Nav className="d-none d-lg-flex flex-row gap-3 ms-5">
             <Nav.Link as={NavLink} to={"/dashboard/hr"} className="text-light">
               Dashboard
             </Nav.Link>
@@ -220,14 +220,6 @@ export const HrNavbar = () => {
                 Le mie richieste
               </NavDropdown.Item>
             </NavDropdown>
-
-            {/* <Nav.Link
-              as={NavLink}
-              to={"/requests/hr"}
-              className="text-light text-nowrap"
-            >
-              Richieste
-            </Nav.Link>*/}
 
             <Nav.Link
               as={NavLink}
