@@ -129,15 +129,19 @@ const AdminNavbar = () => {
             </NavDropdown.Item>
 
             <NavDropdown.Item
+              className="text-dark"
+              as={NavLink}
+              to={"/shifts/admin"}
+            >
+              Turni
+            </NavDropdown.Item>
+
+            <NavDropdown.Item
               as={NavLink}
               to={"/offices/admin"}
               className="text-dark"
             >
               Uffici
-            </NavDropdown.Item>
-
-            <NavDropdown.Item href="#turni" className="text-dark">
-              Turni
             </NavDropdown.Item>
 
             <NavDropdown.Item
@@ -170,12 +174,13 @@ const AdminNavbar = () => {
             <Nav.Link className="text-light" as={NavLink} to={"/users/admin"}>
               Utenti
             </Nav.Link>
-            <Nav.Link as={NavLink} to={"/offices/admin"} className="text-light">
-              Uffici
+
+            <Nav.Link className="text-light" as={NavLink} to={"/shifts/admin/"}>
+              Turni
             </Nav.Link>
 
-            <Nav.Link href="#turni" className="text-light">
-              Turni
+            <Nav.Link as={NavLink} to={"/offices/admin"} className="text-light">
+              Uffici
             </Nav.Link>
 
             <Nav.Link

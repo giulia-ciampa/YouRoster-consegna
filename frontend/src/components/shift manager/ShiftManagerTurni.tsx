@@ -186,7 +186,7 @@ export const ShiftManagerTurni = () => {
             <Row className="g-3 w-100 justify-content-start">
               {Object.entries(groupedShifts).map(
                 ([officeName, officeShifts]) => (
-                  <Col xs={12} md={3} key={officeName}>
+                  <Col xs={12} md={4} lg={3} key={officeName}>
                     <Card className="h-100 shadow-sm p-3">
                       <Card.Body className="d-flex flex-column">
                         {/* Nome dell'ufficio stampato UNA SOLA VOLTA */}
@@ -233,145 +233,148 @@ export const ShiftManagerTurni = () => {
             </Row>
           </Col>
         </Row>
-      </Container>
 
-      {/* Modale(Crea / Modifica) */}
-      <Modal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        centered
-        size="lg"
-      >
-        <Modal.Header closeButton className="px-3">
-          <Modal.Title>
-            {currentShift.id ? "Modifica Turno" : "Crea Nuovo Turno"}
-          </Modal.Title>
-        </Modal.Header>
-        <Form onSubmit={handleSubmitShift}>
-          <Modal.Body className="px-3">
-            <Row>
-              <Col md={12}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-small text-dark">
-                    Ufficio/sede
-                  </Form.Label>
-                  <Dropdown>
-                    <Dropdown.Toggle
-                      className="w-75 bg-white small-text text-dark text-start input d-flex justify-content-between align-items-center"
-                      id="dropdown-office"
-                    >
-                      {currentShift.officeName || "Seleziona un ufficio"}
-                    </Dropdown.Toggle>
+        {/* Modale(Crea / Modifica) */}
+        <Modal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          centered
+          size="lg"
+        >
+          <Modal.Header closeButton className="px-3">
+            <Modal.Title>
+              {currentShift.id ? "Modifica Turno" : "Crea Nuovo Turno"}
+            </Modal.Title>
+          </Modal.Header>
+          <Form onSubmit={handleSubmitShift}>
+            <Modal.Body className="px-3">
+              <Row>
+                <Col md={12}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="text-small text-dark">
+                      Ufficio/sede
+                    </Form.Label>
+                    <Dropdown>
+                      <Dropdown.Toggle
+                        className="w-75 bg-white small-text text-dark text-start input d-flex justify-content-between align-items-center"
+                        id="dropdown-office"
+                      >
+                        {currentShift.officeName || "Seleziona un ufficio"}
+                      </Dropdown.Toggle>
 
-                    <Dropdown.Menu className="w-100 small-text">
-                      {activeOfficesList.length > 0 ? (
-                        activeOfficesList.map((office) => (
-                          <Dropdown.Item
-                            key={office.id}
-                            onClick={() =>
-                              setCurrentShift({
-                                ...currentShift,
-                                officeName: office.name,
-                              })
-                            }
-                          >
-                            {office.name}
+                      <Dropdown.Menu className="w-100 small-text">
+                        {activeOfficesList.length > 0 ? (
+                          activeOfficesList.map((office) => (
+                            <Dropdown.Item
+                              key={office.id}
+                              onClick={() =>
+                                setCurrentShift({
+                                  ...currentShift,
+                                  officeName: office.name,
+                                })
+                              }
+                            >
+                              {office.name}
+                            </Dropdown.Item>
+                          ))
+                        ) : (
+                          <Dropdown.Item disabled>
+                            Nessun ufficio attivo disponibile
                           </Dropdown.Item>
-                        ))
-                      ) : (
-                        <Dropdown.Item disabled>
-                          Nessun ufficio attivo disponibile
+                        )}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </Form.Group>
+                </Col>
+
+                <Col xs={12} className="d-flex flex-column flex-lg-row">
+                  <Form.Group className="mb-3 me-lg-4 mt-lg-3">
+                    <Form.Label className="small-text">Inizio turno</Form.Label>
+                    <Form.Control
+                      className="input"
+                      type="time"
+                      value={currentShift.startTime}
+                      onChange={(e) =>
+                        setCurrentShift({
+                          ...currentShift,
+                          startTime: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3 me-lg-4 mt-lg-3">
+                    <Form.Label className="small-text">Fine turno</Form.Label>
+                    <Form.Control
+                      className="input"
+                      type="time"
+                      value={currentShift.endTime}
+                      onChange={(e) =>
+                        setCurrentShift({
+                          ...currentShift,
+                          endTime: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col xs={12} md={3} lg={4}>
+                  <Form.Group className="mb-3 w-100">
+                    <Form.Label className="text-dark small-text">
+                      Seleziona stato
+                    </Form.Label>
+                    <Dropdown>
+                      <Dropdown.Toggle className="w-100 bg-white small-text text-dark text-start input d-flex justify-content-between align-items-center">
+                        {currentShift.isActive ? "Attivo" : "Disabilitato"}
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu className="w-100 small-text">
+                        <Dropdown.Item
+                          onClick={() =>
+                            setCurrentShift({
+                              ...currentShift,
+                              isActive: true,
+                            })
+                          }
+                        >
+                          Attivo
                         </Dropdown.Item>
-                      )}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Form.Group>
-              </Col>
-
-              <Col xs={12} className="d-flex flex-column flex-lg-row">
-                <Form.Group className="mb-3 me-lg-4 mt-lg-3">
-                  <Form.Label className="small-text">Inizio turno</Form.Label>
-                  <Form.Control
-                    className="input"
-                    type="time"
-                    value={currentShift.startTime}
-                    onChange={(e) =>
-                      setCurrentShift({
-                        ...currentShift,
-                        startTime: e.target.value,
-                      })
-                    }
-                    required
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3 me-lg-4 mt-lg-3">
-                  <Form.Label className="small-text">Fine turno</Form.Label>
-                  <Form.Control
-                    className="input"
-                    type="time"
-                    value={currentShift.endTime}
-                    onChange={(e) =>
-                      setCurrentShift({
-                        ...currentShift,
-                        endTime: e.target.value,
-                      })
-                    }
-                    required
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col xs={12} md={3} lg={4}>
-                <Form.Group className="mb-3 w-100">
-                  <Form.Label className="text-dark small-text">
-                    Seleziona stato
-                  </Form.Label>
-                  <Dropdown>
-                    <Dropdown.Toggle className="w-100 bg-white small-text text-dark text-start input d-flex justify-content-between align-items-center">
-                      {currentShift.isActive ? "Attivo" : "Disabilitato"}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu className="w-100 small-text">
-                      <Dropdown.Item
-                        onClick={() =>
-                          setCurrentShift({
-                            ...currentShift,
-                            isActive: true,
-                          })
-                        }
-                      >
-                        Attivo
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() =>
-                          setCurrentShift({
-                            ...currentShift,
-                            isActive: false,
-                          })
-                        }
-                      >
-                        Disabilitato
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Form.Group>
-              </Col>
-            </Row>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button className="btn-custom1" type="submit">
-              {loading
-                ? "Salvataggio..."
-                : currentShift.id
-                  ? "Salva Modifiche"
-                  : "Salva Turno"}
-            </Button>
-            <Button className="btn-custom2" onClick={() => setShowModal(false)}>
-              Annulla
-            </Button>
-          </Modal.Footer>
-        </Form>
-      </Modal>
+                        <Dropdown.Item
+                          onClick={() =>
+                            setCurrentShift({
+                              ...currentShift,
+                              isActive: false,
+                            })
+                          }
+                        >
+                          Disabilitato
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button className="btn-custom1" type="submit">
+                {loading
+                  ? "Salvataggio..."
+                  : currentShift.id
+                    ? "Salva Modifiche"
+                    : "Salva Turno"}
+              </Button>
+              <Button
+                className="btn-custom2"
+                onClick={() => setShowModal(false)}
+              >
+                Annulla
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal>
+      </Container>
     </>
   )
 }
