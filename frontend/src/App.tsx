@@ -31,6 +31,7 @@ import { HrContracts } from "./components/hr/HrContracts"
 import { UserPersonalData } from "./components/users/UserPersonalData"
 import { AdminRequests } from "./components/admin/AdminRequests"
 import { HrUsers } from "./components/hr/HrUsers"
+import { HrMyRequests } from "./components/hr/HrMyRequests"
 
 function App() {
   return (
@@ -98,6 +99,7 @@ function App() {
             <Route path="/offices/hr" element={<HrOffices />} />
             <Route path="/contracts/hr" element={<HrContracts />} />
             <Route path="/users/hr" element={<HrUsers />} />
+            <Route path="/requests/hr" element={<HrMyRequests />} />
           </Routes>
         </main>
       </BrowserRouter>

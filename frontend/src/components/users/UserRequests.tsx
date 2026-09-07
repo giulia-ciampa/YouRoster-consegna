@@ -169,6 +169,12 @@ export const UserRequests = () => {
         setSummary(data)
       } catch (error) {
         console.error("Errore nel caricamento del riepilogo:", error)
+
+        if (error instanceof Error) {
+          alert(error.message)
+        } else {
+          alert("Errore nel caricamento del riepilogo.")
+        }
       } finally {
         setLoadingSummary(false)
       }
