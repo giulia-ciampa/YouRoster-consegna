@@ -179,7 +179,7 @@ public class ClockingController {
             @PathVariable UUID userId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "15") int size,
-            @RequestParam(defaultValue = "date") String sortBy,
+            @RequestParam(defaultValue = "actualStartTime") String sortBy,
             @RequestParam(required = false) LocalDate date
     ) {
         if (size <= 0) size = 10;

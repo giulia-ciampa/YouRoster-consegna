@@ -146,11 +146,13 @@ const AdminDashBoard = () => {
         const clockingMap: Record<string, Clocking> = {}
 
         for (const assignment of assignmentList) {
-          const userId = assignment.user?.id
+          const userId = assignment.userId
+
           if (userId) {
             try {
               const clockingData = await fetchClockingsByUser(userId, date)
               const userClockings = clockingData.content || clockingData
+
               if (userClockings.length > 0) {
                 clockingMap[userId] = userClockings[0]
               }
@@ -159,6 +161,7 @@ const AdminDashBoard = () => {
             }
           }
         }
+
         setClockings(clockingMap)
       } catch (err) {
         console.error("Errore nel caricamento della dashboard:", err)
@@ -477,7 +480,7 @@ const AdminDashBoard = () => {
                             </td>
                             <td>
                               {assignment.officeName ||
-                                "Nessun ufficio assegnato"}
+                                assignment.assignmentType}
                             </td>
                             <td>
                               {assignment.startTime} - {assignment.endTime}
@@ -543,6 +546,14 @@ const AdminDashBoard = () => {
                           ? clockings[userId]
                           : undefined
 
+                        console.log(
+                          "ASSIGNMENT:",
+                          assignment.userName,
+                          assignment.userId,
+                          "CLOCKING:",
+                          clockings[assignment.userId],
+                        )
+
                         return (
                           <tr key={`clocking-${assignment.id}`}>
                             <td>
@@ -565,9 +576,7 @@ const AdminDashBoard = () => {
                                   {userClocking.actualEndTime}
                                 </span>
                               ) : (
-                                <span className="text-muted">
-                                  Non timbrato / Non timbrato
-                                </span>
+                                <span className="text-muted">Non timbrato</span>
                               )}
                             </td>
                             <td>
